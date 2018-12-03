@@ -15,39 +15,48 @@
 <body>
         <header>
                <div class="row">        
-                   <div class="col-sm-12">
+                   <div class="col-sm-12 d-flex justify-content-center">
                        <h1>Trivia Game </h1>
                    </div>
                </div>
        </header>
        <br>
+ <div class="row d-flex justify-content-center">
+    <div class="col-sm-1 ">
+        <button id="start" class="btn btn-info btn-lg btn-block" type ="button" >Start</button>       
+    </div>
+</div>
 
-
-<div class="row d-flex justify-content-center">
-    <div class="col-sm-12 ">
-          Time Remaining :: <span id="TimerDisplay"></span>
+<br>
+<div class="container" id="game_container">
+<div class="row">
+    <div class="col-sm-12 d-flex justify-content-center">
+          <span id="TimerDisplay"></span>
      </div>
 </div>
 <br>
 
-<div class="row d-flex justify-content-center">
-    <div class="col-sm-12">
-         Message:: <span id="Message"></span>
-     </div>
-</div>
-<br>
 
-<div class="row d-flex justify-content-center">
-    <div class="col-sm-12 ">
-          Question : <span id="QuestionDisplay"></span>
+
+<div class="row">
+    <div class="col-sm-12 d-flex justify-content-center">
+        <span id="Message"></span>
      </div>
 </div>
 <br>
 
 <div class="row">
     <div class="col-sm-12 d-flex justify-content-center">
-          Options:: <span id="OptionDisplay"></span>
+          <span id="QuestionDisplay"></span>
      </div>
+</div>
+<br>
+
+<div class="row">
+    <div class="col-sm-12 d-flex justify-content-center">
+         <ol id="OptionDisplay"></ol>
+     </div>
+</div>
 </div>
 
 </body>

@@ -32,17 +32,51 @@ var QA_Object = [{
     question:"How many strings does a violin have?",
     answer: "Four",
     options:["Three","Four","Five","Six"]
+},
+{
+    question:"Mount Everest is found in which mountain range?",
+    answer: "Himalayas",
+    options:["Andes","Sahyadri","Himalayas","Tibetian"]
+},
+{
+    question:"What color is the circle on the Japanese national flag?",
+    answer: "Red",
+    options:["White","Red","Blue","Black"]
 }
 ]
 
-//  Set our number counter.
-var number = 50;
+var QUESTION_TIMER_COUNT = 10;
 
-//  Variable that will hold our interval ID when we execute the "run" function
-var intervalId;
 
-// Selected Question Answer next Index
-var QA_Index;
+var number = QUESTION_TIMER_COUNT; //  Set our number counter.
+var intervalId; //  Variable that will hold our interval ID when we execute the "run" function
+var QA_Index = 0; // Selected Question Answer next Index
+var correctAnswer = 0; // Answered Correct counter
+var inCorrectAnswer = 0; // Answered inCorrectly counter
+var unAnswered = 0; // unAnswered counter
+var toggleStart = true; // whether we are loading the page for the first time 
+var count = QA_Object.length // no of questions
+
+$(document).ready(function() {
+
+while(count <=0 ){
+if(toggleStart){
+    $("#game_container").hide();
+    $("button").show();
+}
+else{
+    nextQA();
+}
+}
+
+$("#start").on("click", function(){
+    $("button").hide();    
+    $("#game_container").show();   
+    toggleStart=false;
+    nextQA();
+})
+
+})
 
 function run() {
     clearInterval(intervalId);
@@ -52,48 +86,48 @@ function run() {
   
 //  The decrement function.
 function decrement() {
-//  Decrease number by one.
-    number--;
-
-      //  Show the number in the #show-number tag.
+    number--; //  Decrease number by one.
+      //  Display in Webpage
       $("#TimerDisplay").empty();
-      $("#TimerDisplay").append(number);
-      //  Once number hits zero...
+      $("#TimerDisplay").append("Time Remaining : "+number);
+      //  Once number hits zero.. actions to be executed
       if (number === 0) {
-//Trigger the next Question
-        stop();
+            // 1. call the stop() function to reset the interval Id
+                stop();
+            // Reset the Timer Count;
+            number = QUESTION_TIMER_COUNT;
+            $("#Message").append("Answer is : "+QA_Object[QA_Index-1].answer);
+
+            // 2. call the nextQA() function for the next question after we display the message
+            setTimeout(nextQA, 1000 * 5);
+        
 
       }
     }
 
     function stop() {
-
         //  Clears our intervalId. We just pass the name of the interval to the clearInterval function.
         clearInterval(intervalId);
       }
 
-  //  run();
-   nextQA();
+
 
     function nextQA(){
 
         //Run the stop function to clear the timer 
         //stop()
-        //clearDisplay();
-        QA_Index = Math.floor(Math.random()*QA_Object.length);
-        var QuestionDisplay = $("<div>");
-        QuestionDisplay.text("HELLO!!!!");
-        alert(QA_Index+ " :: "+ QA_Object[QA_Index].question);
-        $("#QuestionDisplay").append("HELLO HI@@@@@@");
+        clearDisplay();
+        console.log(QA_Index+ " :: "+ QA_Object[QA_Index].question);
+        var question = "<div>"+QA_Object[QA_Index].question+"<div>";
+        $("#QuestionDisplay").html(question);
         //Display the options available for this Question
         for(var i = 0; i < QA_Object[QA_Index].options.length; i++){
-            $("#OptionDisplay").append(QA_Object[QA_Index].options[i]);
+            $("#OptionDisplay").append("<li>"+QA_Object[QA_Index].options[i]+"</li>");
             console.log(QA_Object[QA_Index].options[i]);
-
         }
-
-        
-
+        run();
+        QA_Index++;
+        count--;
     }
 
     function clearDisplay(){
@@ -101,5 +135,3 @@ function decrement() {
         $("#QuestionDisplay").empty();
         $("#Message").empty();
     }
-
-

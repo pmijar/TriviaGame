@@ -59,15 +59,38 @@ var count = QA_Object.length // no of questions
 
 $(document).ready(function() {
 
-while(count <=0 ){
+clearDisplay();
+ 
 if(toggleStart){
     $("#game_container").hide();
     $("button").show();
 }
 else{
+    if(count<0){
+        // Display Score Stats
+        toggleStart = true;
+        alert("Game Over !!!");
+    }
+    else{
     nextQA();
+    }
 }
+
+if(count === -1){
+    toggleStart = true;
+    stop();
+    clearDisplay();
+    var correctAns = $("<div>");
+    var inCorrectAns = $("div");
+    var unAns = $("div");
+    correctAns.append("Number of correct answers :: " + correctAnswer);
+    inCorrectAns.append("Number of incorrect answers :: " + inCorrectAnswer);
+    unAns.append("Number of correct answers :: " + unAnswered);
+    $("#Message").append(correctAns).append(inCorrectAns).append(unAns);
+    $("button").show();
+    resetGame();
 }
+
 
 $("#start").on("click", function(){
     $("button").hide();    
@@ -75,6 +98,28 @@ $("#start").on("click", function(){
     toggleStart=false;
     nextQA();
 })
+
+$("#OptionDisplay").on("click", "li", function(){
+    if($(this).text() === QA_Object[QA_Index-1].answer){
+        $("#Message").append("You are correct, the answer is " + QA_Object[QA_Index-1].answer);
+        correctAnswer++;
+    }
+    else
+    {
+        $("#Message").append("Sorry wrong answer, the correct answer is " + QA_Object[QA_Index-1].answer);
+        inCorrectAnswer++;
+    }
+   // 1. Stop the decrement counter
+    stop();
+   // 2. Initilaize the number counter for the next Question Answer
+    number = QUESTION_TIMER_COUNT;
+   // 3. call the nextQA() function for the next question after we display the message
+    setTimeout(nextQA, 1000 * 3);
+})
+
+
+
+
 
 })
 
@@ -90,19 +135,19 @@ function decrement() {
       //  Display in Webpage
       $("#TimerDisplay").empty();
       $("#TimerDisplay").append("Time Remaining : "+number);
+
       //  Once number hits zero.. actions to be executed
       if (number === 0) {
             // 1. call the stop() function to reset the interval Id
                 stop();
-            // Reset the Timer Count;
+            // 2. Reset the Timer Count;
             number = QUESTION_TIMER_COUNT;
             $("#Message").append("Answer is : "+QA_Object[QA_Index-1].answer);
-
-            // 2. call the nextQA() function for the next question after we display the message
-            setTimeout(nextQA, 1000 * 5);
-        
-
-      }
+            // 3. Update the un answered count;
+            unAnswered++;
+            // 4. call the nextQA() function for the next question after we display the message
+            setTimeout(nextQA, 1000 * 3);
+        }
     }
 
     function stop() {
@@ -113,16 +158,17 @@ function decrement() {
 
 
     function nextQA(){
-
-        //Run the stop function to clear the timer 
-        //stop()
         clearDisplay();
         console.log(QA_Index+ " :: "+ QA_Object[QA_Index].question);
         var question = "<div>"+QA_Object[QA_Index].question+"<div>";
         $("#QuestionDisplay").html(question);
         //Display the options available for this Question
         for(var i = 0; i < QA_Object[QA_Index].options.length; i++){
-            $("#OptionDisplay").append("<li>"+QA_Object[QA_Index].options[i]+"</li>");
+            var optionsAns = $("<li>");
+            optionsAns.attr("class","answerOptions");
+            optionsAns.attr("dataVal", i);
+            optionsAns.text(QA_Object[QA_Index].options[i]);      
+            $("#OptionDisplay").append(optionsAns);
             console.log(QA_Object[QA_Index].options[i]);
         }
         run();
@@ -134,4 +180,14 @@ function decrement() {
         $("#OptionDisplay").empty();
         $("#QuestionDisplay").empty();
         $("#Message").empty();
+    }
+
+    function resetGame(){
+        number = QUESTION_TIMER_COUNT; 
+        QA_Index = 0; 
+        correctAnswer = 0; 
+        inCorrectAnswer = 0;
+        unAnswered = 0; 
+       // toggleStart = true; // whether we are loading the page for the first time 
+        count = QA_Object.length // no of questions       
     }

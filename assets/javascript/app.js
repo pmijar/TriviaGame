@@ -76,20 +76,7 @@ else{
     }
 }
 
-if(count === -1){
-    toggleStart = true;
-    stop();
-    clearDisplay();
-    var correctAns = $("<div>");
-    var inCorrectAns = $("div");
-    var unAns = $("div");
-    correctAns.append("Number of correct answers :: " + correctAnswer);
-    inCorrectAns.append("Number of incorrect answers :: " + inCorrectAnswer);
-    unAns.append("Number of correct answers :: " + unAnswered);
-    $("#Message").append(correctAns).append(inCorrectAns).append(unAns);
-    $("button").show();
-    resetGame();
-}
+
 
 
 $("#start").on("click", function(){
@@ -139,7 +126,7 @@ function decrement() {
       //  Once number hits zero.. actions to be executed
       if (number === 0) {
             // 1. call the stop() function to reset the interval Id
-                stop();
+            stop();
             // 2. Reset the Timer Count;
             number = QUESTION_TIMER_COUNT;
             $("#Message").append("Answer is : "+QA_Object[QA_Index-1].answer);
@@ -158,6 +145,24 @@ function decrement() {
 
 
     function nextQA(){
+        if(count <= 0){
+            toggleStart = true;
+            stop();
+            clearDisplay();
+            console.log("NEXTQA() Inside COUNT <= 0");
+            var correctAns = $("<div>");
+            var inCorrectAns = $("<div>");
+            var unAns = $("<div>");
+            $("button").text("Start Over");
+            $("button").show();
+            $("#Message").empty();
+            correctAns.text("Number of correct answers :: " + correctAnswer);
+            inCorrectAns.text("Number of incorrect answers :: " + inCorrectAnswer);
+            unAns.text("Questions not answered :: " + unAnswered);
+            $("#Message").append(correctAns).append(inCorrectAns).append(unAns);
+            resetGame();
+        }
+        else {
         clearDisplay();
         console.log(QA_Index+ " :: "+ QA_Object[QA_Index].question);
         var question = "<div>"+QA_Object[QA_Index].question+"<div>";
@@ -165,8 +170,8 @@ function decrement() {
         //Display the options available for this Question
         for(var i = 0; i < QA_Object[QA_Index].options.length; i++){
             var optionsAns = $("<li>");
-            optionsAns.attr("class","answerOptions");
-            optionsAns.attr("dataVal", i);
+           // optionsAns.attr("class","answerOptions");
+          //  optionsAns.attr("dataVal", i);
             optionsAns.text(QA_Object[QA_Index].options[i]);      
             $("#OptionDisplay").append(optionsAns);
             console.log(QA_Object[QA_Index].options[i]);
@@ -175,8 +180,10 @@ function decrement() {
         QA_Index++;
         count--;
     }
+}
 
     function clearDisplay(){
+        $("#TimerDisplay").empty();
         $("#OptionDisplay").empty();
         $("#QuestionDisplay").empty();
         $("#Message").empty();
@@ -188,6 +195,6 @@ function decrement() {
         correctAnswer = 0; 
         inCorrectAnswer = 0;
         unAnswered = 0; 
-       // toggleStart = true; // whether we are loading the page for the first time 
+        toggleStart = true; // whether we are loading the page for the first time 
         count = QA_Object.length // no of questions       
     }

@@ -1,3 +1,39 @@
+body{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 25px;
+    background: url("../images/sky.jpg");
+    background-size:cover;
+}
+
+h1{
+    font-size:40px;
+    font-weight: bolder;
+    color: blue;  
+}
+
+.message{
+    font-size:larger;
+    font-weight: bolder;
+    color: black;   
+}
+
+.question{
+    font-size:larger;
+    font-weight: bolder;
+    color:black;  
+}
+
+.options{
+    font-size:larger;
+    font-weight: bolder;
+}
+
+.timer{
+    font-size:larger;
+    font-weight: bolder;
+    color: black;   
+}
+
 ol{
-    list-style: decimal;
+   /* list-style: decimal;*/
 }

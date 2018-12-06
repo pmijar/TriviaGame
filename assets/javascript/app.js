@@ -59,11 +59,11 @@ var count = QA_Object.length // no of questions
 
 $(document).ready(function() {
 
-clearDisplay();
- 
 if(toggleStart){
+    clearDisplay();
     $("#game_container").hide();
-    $("button").show();
+  //  $("button").show();
+    $("button").css('visibility','visible'); 
 }
 else{
     if(count<0){
@@ -80,7 +80,9 @@ else{
 
 
 $("#start").on("click", function(){
-    $("button").hide();    
+   // $("button").hide();  
+   $("#Message").attr("class", "alert-info");
+    $("button").css('visibility','hidden'); 
     $("#game_container").show();   
     toggleStart=false;
     nextQA();
@@ -88,11 +90,13 @@ $("#start").on("click", function(){
 
 $("#OptionDisplay").on("click", "li", function(){
     if($(this).text() === QA_Object[QA_Index-1].answer){
+        $("#Message").attr("class", "alert-success");
         $("#Message").append("You are correct, the answer is " + QA_Object[QA_Index-1].answer);
         correctAnswer++;
     }
     else
     {
+        $("#Message").attr("class", "alert-danger");
         $("#Message").append("Sorry wrong answer, the correct answer is " + QA_Object[QA_Index-1].answer);
         inCorrectAnswer++;
     }
@@ -118,7 +122,7 @@ function run() {
   
 //  The decrement function.
 function decrement() {
-    number--; //  Decrease number by one.
+
       //  Display in Webpage
       $("#TimerDisplay").empty();
       $("#TimerDisplay").append("Time Remaining : "+number);
@@ -129,12 +133,14 @@ function decrement() {
             stop();
             // 2. Reset the Timer Count;
             number = QUESTION_TIMER_COUNT;
+            $("#Message").attr("class", "alert-primary");
             $("#Message").append("Answer is : "+QA_Object[QA_Index-1].answer);
             // 3. Update the un answered count;
             unAnswered++;
             // 4. call the nextQA() function for the next question after we display the message
             setTimeout(nextQA, 1000 * 3);
         }
+        number--; //  Decrease number by one.
     }
 
     function stop() {
@@ -154,11 +160,14 @@ function decrement() {
             var inCorrectAns = $("<div>");
             var unAns = $("<div>");
             $("button").text("Start Over");
-            $("button").show();
+           // $("button").show();
+           $("button").css('visibility','visible'); 
             $("#Message").empty();
-            correctAns.text("Number of correct answers :: " + correctAnswer);
-            inCorrectAns.text("Number of incorrect answers :: " + inCorrectAnswer);
-            unAns.text("Questions not answered :: " + unAnswered);
+            $("#OptionDisplay").attr("class", "justify-content-center");
+            $("#Message").attr("class", "alert-info jumbotron");        
+            correctAns.text("Correct answers   = " + correctAnswer);
+            inCorrectAns.text("Incorrect answers = " + inCorrectAnswer);
+            unAns.text("Unanswered        = " + unAnswered);
             $("#Message").append(correctAns).append(inCorrectAns).append(unAns);
             resetGame();
         }
@@ -170,9 +179,15 @@ function decrement() {
         //Display the options available for this Question
         for(var i = 0; i < QA_Object[QA_Index].options.length; i++){
             var optionsAns = $("<li>");
-           // optionsAns.attr("class","answerOptions");
-          //  optionsAns.attr("dataVal", i);
-            optionsAns.text(QA_Object[QA_Index].options[i]);      
+            if(i%2 === 0){
+                optionsAns.attr("class","class=list-group-item list-group-item-warning");
+            }
+            else{
+                optionsAns.attr("class","class=list-group-item list-group-item-success");        
+            }    
+            //  optionsAns.attr("dataVal", i);
+            optionsAns.text(QA_Object[QA_Index].options[i]);    
+            $("#OptionDisplay").attr("class","jumbotron container-fluid text-center");
             $("#OptionDisplay").append(optionsAns);
             console.log(QA_Object[QA_Index].options[i]);
         }
@@ -186,7 +201,8 @@ function decrement() {
         $("#TimerDisplay").empty();
         $("#OptionDisplay").empty();
         $("#QuestionDisplay").empty();
-        $("#Message").empty();
+         $("#Message").empty();
+       //$("#Message").css('visibility','hidden'); 
     }
 
     function resetGame(){

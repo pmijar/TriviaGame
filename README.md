@@ -30,7 +30,7 @@ Windows user need to install Gitbash for mac users use mac Terminal application.
 
 Person deploying this code can do the following set up for the game in app.js file:
 
-*Allow maximum number of time is available per question by setting the variable QUESTION_TIMER_COUNT.*          
+*Maximum time available per question is set using the variable QUESTION_TIMER_COUNT.*          
 
 |Parameter| Description|
 |------------|-------------|
